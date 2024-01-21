@@ -1,0 +1,31 @@
+server:
+  port: 1234
+
+spring:
+  application:
+    name: url-shortener
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Local?currentSchema=urlshortener
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+short-url:
+  allowed-characters: ${ALLOWED_CHARS:abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789}
+  key-length: ${KEY_LENGTH:6}
+
+
+dynamic:
+  key:
+      upper: 01234567890
+
+
+
+#SECRET_KEY: ${SECRET_KEY:secret}
+#ALGORITHM: ${ALGORITHM:AES} #AES or ALGORITHM
+
+
