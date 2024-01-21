@@ -8,24 +8,16 @@ import org.urlshortener.dto.ShortUrlRequest;
 import org.urlshortener.dto.ShortUrlResponse;
 import org.urlshortener.services.UrlShortenerService;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/url")
+//@RequestMapping("/api/v1/url")
 public class UrlController {
 
     private final UrlShortenerService urlShortenerService;
 
 
-    @PostMapping("/create-shorten-url")
+    @PostMapping("/api/v1/url/create-shorten-url")
     public ResponseEntity<ShortUrlResponse> createUrl(@RequestBody ShortUrlRequest request) {
         ShortUrlResponse response = urlShortenerService.createShortenUrl(request);
 
@@ -34,8 +26,8 @@ public class UrlController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{key}")
-    public RedirectView redirect(@PathVariable String key) {
-        return urlShortenerService.getFullUrl(key);
+    @GetMapping("/shorturl/{url}")
+    public RedirectView redirect(@PathVariable String url) {
+        return urlShortenerService.getFullUrl(url);
     }
 }

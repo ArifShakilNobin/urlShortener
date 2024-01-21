@@ -21,7 +21,7 @@ short-url:
 
 dynamic:
   key:
-      upper: 01234567890
+      upper: shorturl
 
 
 

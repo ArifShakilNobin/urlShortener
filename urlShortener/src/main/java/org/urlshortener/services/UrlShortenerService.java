@@ -11,18 +11,15 @@ import org.urlshortener.repository.ShortUrlRepository;
 import org.urlshortener.util.ShortUrlUtil;
 
 
-
 @Service
 @RequiredArgsConstructor
 public class UrlShortenerService {
     private final ShortUrlRepository urlRepository;
     private final ShortUrlUtil shortUrlUtil;
-    private final String BASE_URL="http://localhost:1234/api/v1/url";
-
+    private final String BASE_URL = "http://localhost:1234";
+    private final String POST_URL = "api/v1/url";
     @Value("${dynamic.key.upper}")
     private String DYNAMIC_VALUE;
-
-    private final String allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 
     public ShortUrlResponse createShortenUrl(ShortUrlRequest request) {
@@ -36,20 +33,19 @@ public class UrlShortenerService {
             String newKey = shortUrlUtil.generateUniqueKey();
 
 
-//            String newUrl = BASE_URL.replace("http://localhost:1234/api/v1/url", DYNAMIC_VALUE);
-//            System.out.println("--------------"+newUrl);
+            String newUrl = POST_URL.replace("api/v1/url", DYNAMIC_VALUE);
+            System.out.println("--------------" + newUrl);
 
-            String shortUrl = BASE_URL + "/" + newKey;
+            String shortUrl = BASE_URL + "/" + newUrl + "/" + newKey;
 
 //            String replacedUrl = BASE_URL.replaceFirst("/$", "/" + DYNAMIC_VALUE + "/");
 //            System.out.println("--------------"+replacedUrl);
 
 
-
             ShortUrlEntity shortUrlEntity = ShortUrlEntity.builder()
                     .key(newKey)
                     .fullUrl(fullUrl)
-                    .shortUrl(shortUrl )
+                    .shortUrl(shortUrl)
                     .clickCount(0L)
                     .build();
 
@@ -58,9 +54,9 @@ public class UrlShortenerService {
         }
     }
 
-    public RedirectView getFullUrl(String key) {
+    public RedirectView getFullUrl(String url) {
 
-        ShortUrlEntity shortUrlEntity = urlRepository.findByKey(key);
+        ShortUrlEntity shortUrlEntity = urlRepository.findByKey(url);
         if (shortUrlEntity == null) {
             return new RedirectView("/");
         }
@@ -68,8 +64,6 @@ public class UrlShortenerService {
         urlRepository.save(shortUrlEntity);
         return new RedirectView(shortUrlEntity.getFullUrl());
     }
-
-
 
 
 }
