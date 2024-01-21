@@ -28,17 +28,23 @@ public class UrlShortenerService {
     public ShortUrlResponse createShortenUrl(ShortUrlRequest request) {
         String fullUrl = request.getUrl();
 
-        ShortUrlEntity existingShortUrl = urlRepository.findByFullUrl(fullUrl);
+        ShortUrlEntity existingShortUrl = urlRepository.findByShortUrl(fullUrl);
 
         if (existingShortUrl != null) {
-            return ShortUrlResponse.builder().key(existingShortUrl.getKey()).build();
+            return ShortUrlResponse.builder().key(existingShortUrl.getShortUrl()).build();
         } else {
             String newKey = shortUrlUtil.generateUniqueKey();
+
+
+//            String newUrl = BASE_URL.replace("http://localhost:1234/api/v1/url", DYNAMIC_VALUE);
+//            System.out.println("--------------"+newUrl);
 
             String shortUrl = BASE_URL + "/" + newKey;
 
 //            String replacedUrl = BASE_URL.replaceFirst("/$", "/" + DYNAMIC_VALUE + "/");
 //            System.out.println("--------------"+replacedUrl);
+
+
 
             ShortUrlEntity shortUrlEntity = ShortUrlEntity.builder()
                     .key(newKey)
